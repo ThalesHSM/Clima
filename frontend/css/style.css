@@ -1,0 +1,154 @@
+:root {
+    --green-900: #14532d;
+    --green-700: #15803d;
+    --green-500: #22a35a;
+    --green-100: #dcf2e3;
+    --green-50: #f0f9f3;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text);
+    background: var(--green-50);
+    line-height: 1.5;
+}
+
+a { color: var(--green-700); }
+
+/* ---------- Cabeçalho ---------- */
+header.topbar {
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.topbar .inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.brand { font-weight: 700; color: var(--green-900); text-decoration: none; font-size: 1.15rem; }
+.topbar nav { display: flex; gap: 18px; align-items: center; }
+.topbar nav a { text-decoration: none; font-size: .9rem; font-weight: 600; color: var(--text); }
+.topbar nav a.active, .topbar nav a:hover { color: var(--green-700); }
+
+main { max-width: 1000px; margin: 0 auto; padding: 30px 20px 60px; }
+
+/* ---------- Botões e formulários ---------- */
+.btn {
+    display: inline-block;
+    background: var(--green-700);
+    color: #fff;
+    border: 0;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: .95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn:hover { background: var(--green-900); }
+.btn.outline { background: transparent; color: var(--green-700); border: 2px solid var(--green-700); }
+.btn.outline:hover { background: var(--green-100); }
+.btn.link { background: none; color: var(--text); padding: 0; font-size: .9rem; }
+
+form.card label { display: block; font-weight: 600; font-size: .9rem; margin: 14px 0 4px; }
+input[type=text], input[type=email], input[type=password] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5d0;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+input:focus { outline: 2px solid var(--green-500); border-color: transparent; }
+
+.card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+}
+
+.auth-box { max-width: 400px; margin: 30px auto; }
+.auth-box h1 { margin-top: 0; color: var(--green-900); }
+.auth-box .btn { width: 100%; margin-top: 20px; }
+.auth-box p.alt { text-align: center; font-size: .9rem; margin-bottom: 0; }
+
+.msg { padding: 10px 14px; border-radius: 10px; margin-top: 14px; font-size: .9rem; }
+.msg.error { background: #fee2e2; color: #991b1b; }
+.msg[hidden] { display: none; }
+
+/* ---------- Página inicial ---------- */
+.hero { text-align: center; padding: 30px 0 10px; }
+.hero h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); color: var(--green-900); margin: 0 0 12px; }
+.hero p { max-width: 620px; margin: 0 auto 22px; color: var(--muted); }
+.hero .btn + .btn { margin-left: 8px; }
+
+.why { margin: 36px 0; text-align: center; }
+.why h2 { color: var(--green-900); margin-top: 0; }
+
+.section-title { text-align: center; color: var(--green-900); margin-bottom: 4px; }
+.section-sub { text-align: center; color: var(--muted); margin-top: 0; }
+
+.tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+.tip { display: flex; gap: 14px; align-items: flex-start; }
+.tip .icon {
+    flex: none;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--green-100);
+    display: grid; place-items: center;
+    font-size: 1.4rem;
+}
+.tip h3 { margin: 0 0 2px; font-size: 1rem; }
+.tip p { margin: 0; font-size: .875rem; color: var(--muted); }
+
+/* ---------- Dashboard ---------- */
+.page-head h1 { margin: 0; color: var(--green-900); }
+.page-head p { margin: 4px 0 20px; color: var(--muted); text-transform: capitalize; }
+
+.progress { background: var(--green-100); border-radius: 999px; height: 12px; overflow: hidden; }
+.progress > div { height: 100%; width: 0; background: var(--green-500); transition: width .3s; }
+.progress-text { font-size: .85rem; color: var(--muted); margin: 6px 0 18px; }
+
+ul.habits { list-style: none; margin: 0; padding: 0; }
+ul.habits li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eef2ef;
+}
+ul.habits li:last-child { border-bottom: 0; }
+ul.habits input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--green-700); cursor: pointer; flex: none; }
+ul.habits label { flex: 1; cursor: pointer; }
+ul.habits li.done label { text-decoration: line-through; color: var(--muted); }
+.remove { background: none; border: 0; color: #b91c1c; cursor: pointer; font-size: 1.1rem; padding: 4px 8px; border-radius: 6px; }
+.remove:hover { background: #fee2e2; }
+
+
+form.add { display: flex; gap: 10px; margin-top: 18px; }
+form.add input { flex: 1; }
+.empty { color: var(--muted); text-align: center; margin: 10px 0; }
+
+/* ---------- Histórico ---------- */
+.day { margin-bottom: 14px; }
+.day h3 { margin: 0 0 8px; color: var(--green-900); text-transform: capitalize; font-size: 1rem; }
+.day .count { font-weight: 400; color: var(--muted); font-size: .85rem; }
+.day ul { margin: 0; padding-left: 20px; }
+.day li::marker { content: "✔  "; color: var(--green-700); }
+
+footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 20px; }
+

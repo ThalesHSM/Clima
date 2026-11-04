@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minha lista · Clima em Ação</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="inner">
+        <a class="brand" href="dashboard.html">🌍 Clima em Ação</a>
+        <nav>
+            <a class="active" href="dashboard.html">Hoje</a>
+            <a href="history.html">Histórico</a>
+            <button class="btn link" id="logout">Sair</button>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="page-head">
+        <h1 id="hello">Olá!</h1>
+        <p id="today"></p>
+    </div>
+
+    <div class="card">
+        <div class="progress"><div id="bar"></div></div>
+        <div class="progress-text" id="progress-text"></div>
+
+        <ul class="habits" id="habits"></ul>
+        <p class="empty" id="empty" hidden>Sua lista está vazia. Adicione uma ação abaixo.</p>
+
+        <form class="add" id="add-form">
+            <input type="text" id="new-title" placeholder="Nova ação (ex: Levei sacola retornável)" maxlength="120" required>
+            <button class="btn" type="submit">Adicionar</button>
+        </form>
+    </div>
+
+    <p class="progress-text" style="text-align:center">Os checkboxes são zerados automaticamente todo dia. O que você marcou fica no <a href="history.html">histórico</a>.</p>
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
