@@ -16,6 +16,12 @@ async function init() {
         count.className = 'count';
         count.textContent = `(${day.items.length} ${day.items.length === 1 ? 'ação' : 'ações'})`;
         title.append(count);
+        if (day.closed) {
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = 'finalizado';
+            title.append(' ', badge);
+        }
 
         const ul = document.createElement('ul');
         for (const item of day.items) {

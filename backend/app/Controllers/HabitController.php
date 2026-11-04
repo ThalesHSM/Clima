@@ -11,9 +11,11 @@ class HabitController extends Controller
     public function index(): void
     {
         $userId = $this->requireLogin();
+        $today = date('Y-m-d');
         $this->json([
-            'today' => date('Y-m-d'),
-            'habits' => Habit::listWithToday($userId, date('Y-m-d')),
+            'today' => $today,
+            'closed' => Checkin::isClosed($userId, $today),
+            'habits' => Habit::listWithToday($userId, $today),
         ]);
     }
 
@@ -39,9 +41,21 @@ class HabitController extends Controller
         if (!Habit::belongsTo($userId, $habitId)) {
             $this->error('Ação não encontrada.', 404);
         }
+        if (Checkin::isClosed($userId, date('Y-m-d'))) {
+            $this->error('O dia já foi finalizado. Reabra para editar.', 409);
+        }
 
         Checkin::set($userId, $habitId, date('Y-m-d'), (bool) ($in['done'] ?? false));
         $this->json(['ok' => true]);
+    }
+
+    /** Finaliza (closed = true) ou reabre (closed = false) o dia de hoje. */
+    public function closeDay(): void
+    {
+        $userId = $this->requireLogin();
+        $closed = (bool) ($this->input()['closed'] ?? true);
+        Checkin::setClosed($userId, date('Y-m-d'), $closed);
+        $this->json(['closed' => $closed]);
     }
 
     public function delete(): void

@@ -38,6 +38,7 @@ $router->get('/api/me', [AuthController::class, 'me']);
 $router->get('/api/habits', [HabitController::class, 'index']);
 $router->post('/api/habits', [HabitController::class, 'store']);
 $router->post('/api/habits/toggle', [HabitController::class, 'toggle']);
+$router->post('/api/habits/close-day',[HabitController::class, 'closeDay']);
 $router->post('/api/habits/delete',[HabitController::class, 'delete']);
 $router->get('/api/history', [HabitController::class, 'history']);
 

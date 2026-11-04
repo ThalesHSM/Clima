@@ -24,3 +24,10 @@ CREATE TABLE IF NOT EXISTS checkins (
     date TEXT NOT NULL,
     UNIQUE (habit_id, date)
 );
+
+-- Dias que o usuário finalizou (depois disso o dia fica travado para edição)
+CREATE TABLE IF NOT EXISTS closed_days (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    date TEXT NOT NULL,
+    PRIMARY KEY (user_id, date)
+);

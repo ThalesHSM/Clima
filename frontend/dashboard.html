@@ -11,6 +11,7 @@
     <div class="inner">
         <a class="brand" href="dashboard.html">🌍 Clima em Ação</a>
         <nav>
+            <a href="index.html">Início</a>
             <a class="active" href="dashboard.html">Hoje</a>
             <a href="history.html">Histórico</a>
             <button class="btn link" id="logout">Sair</button>
@@ -31,10 +32,13 @@
         <ul class="habits" id="habits"></ul>
         <p class="empty" id="empty" hidden>Sua lista está vazia. Adicione uma ação abaixo.</p>
 
+        <div class="msg ok" id="closed-msg" hidden>✅ Dia finalizado! Suas ações já estão no histórico.</div>
+
         <form class="add" id="add-form">
             <input type="text" id="new-title" placeholder="Nova ação (ex: Levei sacola retornável)" maxlength="120" required>
             <button class="btn" type="submit">Adicionar</button>
         </form>
+        <button class="btn finish" id="finish" type="button">Finalizar o dia</button>
     </div>
 
     <p class="progress-text" style="text-align:center">Os checkboxes são zerados automaticamente todo dia. O que você marcou fica no <a href="history.html">histórico</a>.</p>

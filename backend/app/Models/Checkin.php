@@ -16,7 +16,22 @@ class Checkin
         $st->execute([$habitId, $userId, $date]);
     }
 
-    /** Histórico desde uma data: lista de ['date' => ..., 'items' => [títulos]], mais recente primeiro. */
+    public static function isClosed(int $userId, string $date): bool
+    {
+        $st = Database::get()->prepare('SELECT 1 FROM closed_days WHERE user_id = ? AND date = ?');
+        $st->execute([$userId, $date]);
+        return (bool) $st->fetch();
+    }
+
+    public static function setClosed(int $userId, string $date, bool $closed): void
+    {
+        $sql = $closed
+            ? 'INSERT OR IGNORE INTO closed_days (user_id, date) VALUES (?, ?)'
+            : 'DELETE FROM closed_days WHERE user_id = ? AND date = ?';
+        Database::get()->prepare($sql)->execute([$userId, $date]);
+    }
+
+    /** Histórico desde uma data: lista de ['date', 'closed', 'items' => [títulos]], mais recente primeiro. */
     public static function history(int $userId, string $since): array
     {
         $st = Database::get()->prepare(
@@ -34,7 +49,11 @@ class Checkin
 
         $result = [];
         foreach ($days as $date => $items) {
-            $result[] = ['date' => $date, 'items' => $items];
+            $result[] = [
+                'date' => $date,
+                'closed' => self::isClosed($userId, $date),
+                'items' => $items,
+            ];
         }
         return $result;
     }

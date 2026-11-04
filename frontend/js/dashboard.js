@@ -5,7 +5,11 @@ const progressText = document.getElementById('progress-text');
 const addForm = document.getElementById('add-form');
 const newTitle = document.getElementById('new-title');
 
+const finishBtn = document.getElementById('finish');
+const closedMsg = document.getElementById('closed-msg');
+
 let habits = [];
+let closed = false;
 
 async function init() {
     const user = await requireLogin();
@@ -17,6 +21,7 @@ async function init() {
 async function load() {
     const data = await api('/habits');
     habits = data.habits;
+    closed = data.closed;
     document.getElementById('today').textContent = formatDate(data.today);
     render();
 }
@@ -33,6 +38,7 @@ function render() {
         box.type = 'checkbox';
         box.id = 'habit-' + h.id;
         box.checked = h.done;
+        box.disabled = closed; // dia finalizado: travado
         box.addEventListener('change', () => toggle(h, box.checked));
 
         const label = document.createElement('label');
@@ -49,6 +55,11 @@ function render() {
         listEl.append(li);
     }
     updateProgress();
+
+    closedMsg.hidden = !closed;
+    addForm.hidden = closed;
+    finishBtn.textContent = closed ? 'Reabrir o dia' : 'Finalizar o dia';
+    finishBtn.classList.toggle('reopen', closed);
 }
 
 function updateProgress() {
@@ -74,6 +85,15 @@ async function remove(habit) {
     await api('/habits/delete', 'POST', { id: habit.id });
     load();
 }
+
+finishBtn.addEventListener('click', async () => {
+    try {
+        await api('/habits/close-day', 'POST', { closed: !closed });
+        load();
+    } catch (err) {
+        alert(err.message);
+    }
+});
 
 addForm.addEventListener('submit', async (e) => {
     e.preventDefault();

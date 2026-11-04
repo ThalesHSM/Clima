@@ -10,9 +10,15 @@
 <header class="topbar">
     <div class="inner">
         <a class="brand" href="index.html">🌍 Clima em Ação</a>
-        <nav>
+        <nav id="nav-guest">
             <a href="login.html">Entrar</a>
             <a class="btn" href="register.html" style="color:#fff">Criar conta</a>
+        </nav>
+        <nav id="nav-user" hidden>
+            <a class="active" href="index.html">Início</a>
+            <a href="dashboard.html">Hoje</a>
+            <a href="history.html">Histórico</a>
+            <button class="btn link" id="logout">Sair</button>
         </nav>
     </div>
 </header>
@@ -21,8 +27,13 @@
     <section class="hero">
         <h1>Pequenas ações, grande impacto no clima</h1>
         <p>Acompanhe todo dia o que você fez pelo planeta. Marque sua lista, veja seu histórico e transforme boas atitudes em hábito. 🌱</p>
-        <a class="btn" href="register.html">Começar agora</a>
-        <a class="btn outline" href="login.html">Já tenho conta</a>
+        <div id="cta">
+            <a class="btn" href="register.html">Começar agora</a>
+            <a class="btn outline" href="login.html">Já tenho conta</a>
+        </div>
+        <div id="cta-user" hidden>
+            <a class="btn" href="dashboard.html">Ir para minha lista</a>
+        </div>
     </section>
 
     <section class="card why">
@@ -46,5 +57,17 @@
 </main>
 
 <footer>Clima em Ação · inspirado no ODS 13 – Ação contra a mudança global do clima</footer>
+
+<script src="js/api.js"></script>
+<script>
+    // Se estiver logado, troca o menu e o botão principal
+    api('/me').then(() => {
+        document.getElementById('nav-guest').hidden = true;
+        document.getElementById('nav-user').hidden = false;
+        document.getElementById('logout').addEventListener('click', logout);
+        document.getElementById('cta').hidden = true;
+        document.getElementById('cta-user').hidden = false;
+    }).catch(() => {});
+</script>
 </body>
 </html>
