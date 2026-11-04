@@ -15,8 +15,8 @@ class Habit
 
     public static function create(int $userId, string $title): void
     {
-        $st = Database::get()->prepare('INSERT INTO habits (user_id, title) VALUES (?, ?)');
-        $st->execute([$userId, $title]);
+        $st = Database::get()->prepare('INSERT INTO habits (user_id, title, created_at) VALUES (?, ?, ?)');
+        $st->execute([$userId, $title, date('Y-m-d H:i:s')]);
     }
 
     /** Ações ativas do usuário, indicando se foram feitas hoje. */
@@ -38,11 +38,17 @@ class Habit
         ], $st->fetchAll());
     }
 
+    public static function rename(int $userId, int $habitId, string $title): void
+    {
+        $st = Database::get()->prepare('UPDATE habits SET title = ? WHERE id = ? AND user_id = ? AND active = 1');
+        $st->execute([$title, $habitId, $userId]);
+    }
+
     /** Remove da lista (o histórico continua guardado). */
     public static function remove(int $userId, int $habitId): void
     {
-        $st = Database::get()->prepare('UPDATE habits SET active = 0 WHERE id = ? AND user_id = ?');
-        $st->execute([$habitId, $userId]);
+        $st = Database::get()->prepare('UPDATE habits SET active = 0, removed_at = ? WHERE id = ? AND user_id = ? AND active = 1');
+        $st->execute([date('Y-m-d'), $habitId, $userId]);
     }
 
     public static function belongsTo(int $userId, int $habitId): bool

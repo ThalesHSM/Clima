@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\Checkin;
 use App\Models\Habit;
+use App\Models\Stats;
 
 class HabitController extends Controller
 {
@@ -30,6 +31,24 @@ class HabitController extends Controller
 
         Habit::create($userId, $title);
         $this->json(['ok' => true], 201);
+    }
+
+    public function update(): void
+    {
+        $userId = $this->requireLogin();
+        $in = $this->input();
+        $habitId = (int) ($in['id'] ?? 0);
+        $title = trim($in['title'] ?? '');
+
+        if ($title === '' || mb_strlen($title) > 120) {
+            $this->error('Digite uma ação com até 120 caracteres.', 422);
+        }
+        if (!Habit::belongsTo($userId, $habitId)) {
+            $this->error('Ação não encontrada.', 404);
+        }
+
+        Habit::rename($userId, $habitId, $title);
+        $this->json(['ok' => true]);
     }
 
     public function toggle(): void
@@ -71,5 +90,17 @@ class HabitController extends Controller
         $userId = $this->requireLogin();
         $since = date('Y-m-d', strtotime('-30 days'));
         $this->json(['days' => Checkin::history($userId, $since)]);
+    }
+
+    /** Calendário + estatísticas de um mês: /api/month?month=2026-10 */
+    public function month(): void
+    {
+        $userId = $this->requireLogin();
+        $month = $_GET['month'] ?? date('Y-m');
+
+        if (!preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $month)) {
+            $this->error('Mês inválido.', 422);
+        }
+        $this->json(Stats::month($userId, $month));
     }
 }

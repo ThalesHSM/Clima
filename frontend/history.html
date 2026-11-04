@@ -22,11 +22,33 @@
 <main>
     <div class="page-head">
         <h1>Histórico</h1>
-        <p>Suas ações dos últimos 30 dias</p>
     </div>
 
+    <div class="month-nav">
+        <button class="icon-btn" id="prev" title="Mês anterior">‹</button>
+        <h2 id="month-title">…</h2>
+        <button class="icon-btn" id="next" title="Próximo mês">›</button>
+    </div>
+
+    <div class="stats">
+        <div class="card stat"><small>Ações no mês</small><strong id="st-total">–</strong></div>
+        <div class="card stat"><small>Média por dia ativo</small><strong id="st-avg">–</strong></div>
+        <div class="card stat"><small>Ação mais feita</small><strong id="st-top" class="small-text">–</strong><em id="st-top-count"></em></div>
+    </div>
+
+    <div class="card">
+        <div class="calendar" id="calendar"></div>
+        <div class="legend">
+            menos
+            <span class="cal-day lvl-0"></span><span class="cal-day lvl-1"></span><span class="cal-day lvl-2"></span><span class="cal-day lvl-3"></span><span class="cal-day lvl-4"></span>
+            mais
+        </div>
+    </div>
+
+    <h2 class="list-title">Últimos 30 dias</h2>
     <p class="empty" id="empty" hidden>Nada por aqui ainda. Marque ações na tela "Hoje"!</p>
     <div id="days"></div>
+
 </main>
 
 <script src="js/api.js"></script>

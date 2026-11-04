@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS habits (
     user_id INTEGER NOT NULL REFERENCES users(id),
     title TEXT NOT NULL,
     active INTEGER NOT NULL DEFAULT 1,
+    removed_at TEXT,                  -- dia em que saiu da lista (para o cálculo do calendário)
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

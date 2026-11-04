@@ -4,12 +4,12 @@ const barEl = document.getElementById('bar');
 const progressText = document.getElementById('progress-text');
 const addForm = document.getElementById('add-form');
 const newTitle = document.getElementById('new-title');
-
 const finishBtn = document.getElementById('finish');
 const closedMsg = document.getElementById('closed-msg');
 
 let habits = [];
 let closed = false;
+let editingId = null; // id da ação que está sendo editada
 
 async function init() {
     const user = await requireLogin();
@@ -33,25 +33,7 @@ function render() {
     for (const h of habits) {
         const li = document.createElement('li');
         li.className = h.done ? 'done' : '';
-
-        const box = document.createElement('input');
-        box.type = 'checkbox';
-        box.id = 'habit-' + h.id;
-        box.checked = h.done;
-        box.disabled = closed; // dia finalizado: travado
-        box.addEventListener('change', () => toggle(h, box.checked));
-
-        const label = document.createElement('label');
-        label.htmlFor = box.id;
-        label.textContent = h.title; // textContent evita injeção de HTML
-
-        const del = document.createElement('button');
-        del.className = 'remove';
-        del.title = 'Remover da lista';
-        del.textContent = '✕';
-        del.addEventListener('click', () => remove(h));
-
-        li.append(box, label, del);
+        li.append(...(h.id === editingId ? editRow(h) : viewRow(h)));
         listEl.append(li);
     }
     updateProgress();
@@ -60,6 +42,70 @@ function render() {
     addForm.hidden = closed;
     finishBtn.textContent = closed ? 'Reabrir o dia' : 'Finalizar o dia';
     finishBtn.classList.toggle('reopen', closed);
+}
+
+function iconButton(text, title, onClick, extraClass = '') {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'icon-btn ' + extraClass;
+    b.title = title;
+    b.textContent = text;
+    b.addEventListener('click', onClick);
+    return b;
+}
+
+function viewRow(h) {
+    const box = document.createElement('input');
+    box.type = 'checkbox';
+    box.id = 'habit-' + h.id;
+    box.checked = h.done;
+    box.disabled = closed; // dia finalizado: travado
+    box.addEventListener('change', () => toggle(h, box.checked));
+
+    const label = document.createElement('label');
+    label.htmlFor = box.id;
+    label.textContent = h.title; // textContent evita injeção de HTML
+
+    return [
+        box, label,
+        iconButton('✎', 'Editar texto', () => { editingId = h.id; render(); }),
+        iconButton('✕', 'Remover da lista', () => remove(h), 'danger'),
+    ];
+}
+
+function editRow(h) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'edit-input';
+    input.value = h.title;
+    input.maxLength = 120;
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') save(h, input.value);
+        if (e.key === 'Escape') { editingId = null; render(); }
+    });
+    setTimeout(() => input.focus(), 0);
+
+    return [
+        input,
+        iconButton('✓', 'Salvar', () => save(h, input.value)),
+        iconButton('↩', 'Cancelar', () => { editingId = null; render(); }),
+    ];
+}
+
+async function save(habit, title) {
+    title = title.trim();
+    if (!title || title === habit.title) {
+        editingId = null;
+        render();
+        return;
+    }
+    try {
+        await api('/habits/update', 'POST', { id: habit.id, title });
+        editingId = null;
+        load();
+    } catch (err) {
+        alert(err.message);
+    }
 }
 
 function updateProgress() {
@@ -89,7 +135,7 @@ async function remove(habit) {
 finishBtn.addEventListener('click', async () => {
     try {
         await api('/habits/close-day', 'POST', { closed: !closed });
-        load();
+        load(); // recarrega para atualizar a sequência
     } catch (err) {
         alert(err.message);
     }
