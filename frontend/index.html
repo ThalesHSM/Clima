@@ -56,6 +56,13 @@
         <div class="card tip"><div class="icon">🛍️</div><div><h3>Leve sua sacola</h3><p>Sacolas retornáveis evitam plástico descartável.</p><button class="btn small add-tip" data-title="Usei sacola retornável" hidden>+ adicionar à minha lista</button></div></div>
         <div class="card tip"><div class="icon">🥗</div><div><h3>Um dia sem carne</h3><p>Reduzir a carne diminui bastante as emissões da alimentação.</p><button class="btn small add-tip" data-title="Fiz um dia sem carne" hidden>+ adicionar à minha lista</button></div></div>
     </div>
+
+    <section class="news" id="news" hidden>
+        <h2 class="section-title">Notícias sobre natureza e clima</h2>
+        <p class="section-sub">Últimas matérias do <a id="news-source" href="https://brasil.mongabay.com/" target="_blank" rel="noopener noreferrer">Mongabay Brasil</a>. Ao clicar, você lê a matéria completa no site original.</p>
+        <div class="news-list" id="news-list"></div>
+        <p class="news-credit">Títulos e matérias de autoria do Mongabay Brasil e de seus colaboradores, publicados sob licença Creative Commons CC BY-ND 4.0.</p>
+    </section>
 </main>
 
 <footer>Clima em Ação · inspirado no ODS 13 – Ação contra a mudança global do clima</footer>
@@ -84,6 +91,32 @@
                 }
             });
         });
+    }).catch(() => {});
+</script>
+
+<script>
+    // Notícias (se a busca falhar, a seção simplesmente não aparece)
+    api('/news').then((data) => {
+        if (!data.items.length) return;
+
+        const list = document.getElementById('news-list');
+        for (const n of data.items) {
+            const a = document.createElement('a');
+            a.className = 'card news-item';
+            a.href = n.link;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+
+            const meta = document.createElement('small');
+            meta.textContent = data.source.name + (n.date ? ' · ' + n.date.split('-').reverse().join('/') : '');
+
+            const title = document.createElement('strong');
+            title.textContent = n.title; // exatamente como publicado
+
+            a.append(meta, title);
+            list.append(a);
+        }
+        document.getElementById('news').hidden = false;
     }).catch(() => {});
 </script>
 </body>

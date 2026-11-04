@@ -3,6 +3,7 @@
 
 use App\Controllers\AuthController;
 use App\Controllers\HabitController;
+use App\Controllers\NewsController;
 use App\Core\Router;
 
 date_default_timezone_set('America/Sao_Paulo');
@@ -47,6 +48,7 @@ $router->get('/api/month', [HabitController::class, 'month']);
 $router->post('/api/habits/close-day',[HabitController::class, 'closeDay']);
 $router->post('/api/habits/delete',[HabitController::class, 'delete']);
 $router->get('/api/history', [HabitController::class, 'history']);
+$router->get('/api/news', [NewsController::class, 'index']);
 
 try {
     $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

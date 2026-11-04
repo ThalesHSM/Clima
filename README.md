@@ -13,6 +13,7 @@ Lista diária de ações pelo clima, inspirada no ODS 13 (ação contra a mudan�
 - Sequência de dias seguidos finalizados
 - Histórico: lista dos últimos 30 dias, calendário mensal e estatísticas do mês
 - Sugestões na página inicial, com botão para adicionar à lista
+- Notícias de natureza e clima na página inicial (Mongabay Brasil, via RSS)
 - Estimativa de CO₂ evitado (apenas ações com fonte; veja "Como estimamos" na tela de histórico)
 
 ## Como rodar
@@ -53,6 +54,7 @@ Abra http://127.0.0.1:3000. O banco (`backend/data/clima.sqlite`) é criado auto
 | POST | /api/habits/delete | remove da lista (id) |
 | GET | /api/history | ações feitas nos últimos 30 dias |
 | GET | /api/month?month=AAAA-MM | calendário e estatísticas de um mês |
+| GET | /api/news | últimas notícias do Mongabay Brasil (pública, com cache de 30 min) |
 
 ## Como funciona o reset diário
 
@@ -66,3 +68,7 @@ Só duas ações têm valor estimado, ambas com fonte (veja o bloco "Como estima
 - dia sem carne: ~1,8 kg por vez (Scarborough et al., 2014)
 
 São valores aproximados, com dados do Reino Unido. As demais ações não têm estimativa e não entram na soma.
+
+## Notícias (Mongabay Brasil)
+
+A página inicial lista as matérias mais recentes do feed RSS do [Mongabay Brasil](https://brasil.mongabay.com/). O conteúdo deles é publicado sob licença CC BY-ND 4.0, então o uso é conservador: guardamos e mostramos só **título, data e link** para a matéria original, sempre com a fonte. Sem imagens, sem trechos e sem alterar ou traduzir os títulos. O backend guarda o resultado por 30 minutos em `backend/data/news-cache.json` (ignorado pelo git); se o site deles ficar fora do ar, usa a última versão guardada ou esconde a seção.

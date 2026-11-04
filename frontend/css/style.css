@@ -202,3 +202,12 @@ footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 20p
 /* ---------- Home: botão de adicionar sugestão ---------- */
 .btn.small { padding: 4px 14px; font-size: .8rem; margin-top: 8px; }
 .btn:disabled { background: var(--green-100); color: var(--green-900); cursor: default; }
+
+/* ---------- Home: notícias ---------- */
+.news { margin-top: 44px; }
+.news-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+.news-item { display: block; text-decoration: none; color: var(--text); padding: 18px 20px; transition: transform .15s, box-shadow .15s; }
+.news-item:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, .1); }
+.news-item small { display: block; color: var(--green-700); font-weight: 700; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+.news-item strong { line-height: 1.35; }
+.news-credit { text-align: center; color: var(--muted); font-size: .75rem; margin-top: 16px; }
