@@ -45,6 +45,7 @@ function renderStats(s) {
     document.getElementById('st-avg').textContent = String(s.average).replace('.', ',');
     document.getElementById('st-top').textContent = s.top ? s.top.title : '—';
     document.getElementById('st-top-count').textContent = s.top ? `${s.top.count}x no mês` : 'sem ações no mês';
+    document.getElementById('st-co2').textContent = s.co2 > 0 ? formatCo2(s.co2) : '—';
 }
 
 function level(day) {

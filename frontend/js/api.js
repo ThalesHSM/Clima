@@ -1,5 +1,5 @@
 // Endereço do backend (PHP). Troque se rodar em outra porta.
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 // Faz a requisição e devolve o JSON. Em caso de erro, lança Error com a mensagem da API.
 async function api(path, method = 'GET', body = null) {
@@ -39,4 +39,10 @@ function formatDate(iso) {
     return new Date(y, m - 1, d).toLocaleDateString('pt-BR', {
         weekday: 'long', day: 'numeric', month: 'long',
     });
+}
+
+// Gramas de CO₂ -> "830 g" ou "1,7 kg"
+function formatCo2(grams) {
+    if (grams < 1000) return `${grams} g`;
+    return `${(grams / 1000).toFixed(1).replace('.', ',')} kg`;
 }

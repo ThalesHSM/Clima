@@ -1,6 +1,7 @@
 <?php
 namespace App\Core;
 
+use App\Models\Habit;
 use PDO;
 
 class Database
@@ -25,6 +26,16 @@ class Database
     private static function migrate(PDO $pdo): void
     {
         $cols = array_column($pdo->query('PRAGMA table_info(habits)')->fetchAll(), 'name');
+
+        if (!in_array('co2_g', $cols, true)) {
+            $pdo->exec('ALTER TABLE habits ADD COLUMN co2_g INTEGER NOT NULL DEFAULT 0');
+            $st = $pdo->prepare('UPDATE habits SET co2_g = ? WHERE title = ?');
+            foreach (Habit::CATALOG as $title => $co2) {
+                if ($co2 > 0) {
+                    $st->execute([$co2, $title]);
+                }
+            }
+        }
 
         if (!in_array('removed_at', $cols, true)) {
             $pdo->exec('ALTER TABLE habits ADD COLUMN removed_at TEXT');

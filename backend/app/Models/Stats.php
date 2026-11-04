@@ -16,7 +16,7 @@ class Stats
 
         // Quantas ações foram feitas (e quanto CO2) em cada dia do mês
         $st = $db->prepare(
-            'SELECT c.date, COUNT(*) AS n
+            'SELECT c.date, COUNT(*) AS n, SUM(h.co2_g) AS co2
              FROM checkins c JOIN habits h ON h.id = c.habit_id
              WHERE c.user_id = ? AND c.date BETWEEN ? AND ?
              GROUP BY c.date'
@@ -35,6 +35,7 @@ class Stats
         $days = [];
         $total = 0;
         $activeDays = 0;
+        $co2 = 0;
         for ($d = 1; $d <= $daysInMonth; $d++) {
             $date = sprintf('%s-%02d', $month, $d);
             $done = (int) ($perDay[$date]['n'] ?? 0);
@@ -57,6 +58,7 @@ class Stats
 
             $total += $done;
             $activeDays += $done > 0 ? 1 : 0;
+            $co2 += (int) ($perDay[$date]['co2'] ?? 0);
         }
 
         // Ação mais feita no mês
@@ -77,6 +79,7 @@ class Stats
                 'activeDays' => $activeDays,
                 'average' => $activeDays ? round($total / $activeDays, 1) : 0,
                 'top' => $top ? ['title' => $top['title'], 'count' => (int) $top['n']] : null,
+                'co2' => $co2,
             ],
         ];
     }

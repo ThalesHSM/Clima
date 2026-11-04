@@ -31,6 +31,25 @@ class Checkin
         Database::get()->prepare($sql)->execute([$userId, $date]);
     }
 
+    /**
+     * Dias seguidos finalizados. Se hoje ainda não foi finalizado, a contagem
+     * parte de ontem (a sequência só "quebra" quando um dia inteiro passa sem finalizar).
+     */
+    public static function streak(int $userId, string $today): int
+    {
+        $st = Database::get()->prepare('SELECT date FROM closed_days WHERE user_id = ? ORDER BY date DESC');
+        $st->execute([$userId]);
+        $closed = array_flip($st->fetchAll(\PDO::FETCH_COLUMN));
+
+        $day = isset($closed[$today]) ? $today : date('Y-m-d', strtotime($today . ' -1 day'));
+        $count = 0;
+        while (isset($closed[$day])) {
+            $count++;
+            $day = date('Y-m-d', strtotime($day . ' -1 day'));
+        }
+        return $count;
+    }
+
     /** Histórico desde uma data: lista de ['date', 'closed', 'items' => [títulos]], mais recente primeiro. */
     public static function history(int $userId, string $since): array
     {

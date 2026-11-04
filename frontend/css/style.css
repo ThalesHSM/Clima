@@ -146,7 +146,14 @@ ul.habits li.done label { text-decoration: line-through; color: var(--muted); }
 .icon-btn.danger:hover { background: #fee2e2; color: #b91c1c; }
 .icon-btn:disabled { opacity: .35; cursor: default; }
 ul.habits input.edit-input { flex: 1; padding: 6px 10px; }
+.co2-tag { font-size: .72rem; background: var(--green-100); color: var(--green-900); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+ul.habits li.done .co2-tag { text-decoration: none; display: inline-block; }
 
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 16px; }
+.mini { display: flex; align-items: center; gap: 12px; padding: 14px 18px; }
+.mini-icon { font-size: 1.6rem; }
+.mini small { display: block; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+.mini strong { font-size: .95rem; }
 
 form.add { display: flex; gap: 10px; margin-top: 18px; }
 form.add input { flex: 1; }
@@ -192,3 +199,6 @@ footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 20p
 .sources summary { cursor: pointer; font-weight: 700; color: var(--green-900); }
 .sources li { margin-bottom: 8px; }
 
+/* ---------- Home: botão de adicionar sugestão ---------- */
+.btn.small { padding: 4px 14px; font-size: .8rem; margin-top: 8px; }
+.btn:disabled { background: var(--green-100); color: var(--green-900); cursor: default; }

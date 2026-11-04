@@ -44,15 +44,17 @@
     </section>
 
     <h2 class="section-title">Ideias para o seu dia</h2>
-    <p class="section-sub">Ao criar sua conta, você já recebe algumas dessas na sua lista.</p>
+    <p class="section-sub">Ao criar sua conta, você já recebe algumas dessas na sua lista. Logado, é só clicar para adicionar outras.</p>
 
     <div class="tips">
-        <div class="card tip"><div class="icon">🍃</div><div><h3>Reduza o consumo</h3><p>Evite desperdícios e compre apenas o necessário.</p></div></div>
-        <div class="card tip"><div class="icon">♻️</div><div><h3>Reutilize e recicle</h3><p>Dê novo uso aos materiais e descarte corretamente.</p></div></div>
-        <div class="card tip"><div class="icon">🚲</div><div><h3>Transporte sustentável</h3><p>Prefira caminhar, pedalar ou usar transporte público.</p></div></div>
-        <div class="card tip"><div class="icon">💡</div><div><h3>Economize energia</h3><p>Desligue aparelhos da tomada e use lâmpadas LED.</p></div></div>
-        <div class="card tip"><div class="icon">🌳</div><div><h3>Plante árvores</h3><p>A vegetação absorve CO₂ e melhora o clima local.</p></div></div>
-        <div class="card tip"><div class="icon">🎓</div><div><h3>Eduque e compartilhe</h3><p>Conscientize mais pessoas e multiplique o impacto.</p></div></div>
+        <div class="card tip"><div class="icon">🍃</div><div><h3>Reduza o consumo</h3><p>Evite desperdícios e compre apenas o necessário.</p><button class="btn small add-tip" data-title="Evitei desperdícios e comprei só o necessário" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">♻️</div><div><h3>Reutilize e recicle</h3><p>Dê novo uso aos materiais e descarte corretamente.</p><button class="btn small add-tip" data-title="Separei o lixo para reciclagem" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">🚲</div><div><h3>Transporte sustentável</h3><p>Prefira caminhar, pedalar ou usar transporte público.</p><button class="btn small add-tip" data-title="Usei transporte sustentável (a pé, bicicleta ou público)" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">💡</div><div><h3>Economize energia</h3><p>Desligue aparelhos da tomada e use lâmpadas LED.</p><button class="btn small add-tip" data-title="Desliguei aparelhos da tomada" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">🌳</div><div><h3>Plante árvores</h3><p>A vegetação absorve CO₂ e melhora o clima local.</p><button class="btn small add-tip" data-title="Plantei ou cuidei de uma árvore" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">🎓</div><div><h3>Eduque e compartilhe</h3><p>Conscientize mais pessoas e multiplique o impacto.</p><button class="btn small add-tip" data-title="Conversei com alguém sobre o clima" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">🛍️</div><div><h3>Leve sua sacola</h3><p>Sacolas retornáveis evitam plástico descartável.</p><button class="btn small add-tip" data-title="Usei sacola retornável" hidden>+ adicionar à minha lista</button></div></div>
+        <div class="card tip"><div class="icon">🥗</div><div><h3>Um dia sem carne</h3><p>Reduzir a carne diminui bastante as emissões da alimentação.</p><button class="btn small add-tip" data-title="Fiz um dia sem carne" hidden>+ adicionar à minha lista</button></div></div>
     </div>
 </main>
 
@@ -67,6 +69,21 @@
         document.getElementById('logout').addEventListener('click', logout);
         document.getElementById('cta').hidden = true;
         document.getElementById('cta-user').hidden = false;
+
+        // Botões de adicionar sugestão (só aparecem logado)
+        document.querySelectorAll('.add-tip').forEach((btn) => {
+            btn.hidden = false;
+            btn.addEventListener('click', async () => {
+                btn.disabled = true;
+                try {
+                    await api('/habits', 'POST', { title: btn.dataset.title });
+                    btn.textContent = '✓ Adicionada';
+                } catch (err) {
+                    btn.textContent = err.status === 409 ? '✓ Já está na lista' : 'Erro, tente de novo';
+                    if (err.status !== 409) btn.disabled = false;
+                }
+            });
+        });
     }).catch(() => {});
 </script>
 </body>

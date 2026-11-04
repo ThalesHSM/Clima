@@ -6,9 +6,13 @@ const addForm = document.getElementById('add-form');
 const newTitle = document.getElementById('new-title');
 const finishBtn = document.getElementById('finish');
 const closedMsg = document.getElementById('closed-msg');
+const streakEl = document.getElementById('streak');
+const co2El = document.getElementById('co2');
 
 let habits = [];
 let closed = false;
+let streak = 0;
+let co2Total = 0;
 let editingId = null; // id da ação que está sendo editada
 
 async function init() {
@@ -22,6 +26,8 @@ async function load() {
     const data = await api('/habits');
     habits = data.habits;
     closed = data.closed;
+    streak = data.streak;
+    co2Total = data.co2Total;
     document.getElementById('today').textContent = formatDate(data.today);
     render();
 }
@@ -37,6 +43,7 @@ function render() {
         listEl.append(li);
     }
     updateProgress();
+    updateSummary();
 
     closedMsg.hidden = !closed;
     addForm.hidden = closed;
@@ -65,6 +72,13 @@ function viewRow(h) {
     const label = document.createElement('label');
     label.htmlFor = box.id;
     label.textContent = h.title; // textContent evita injeção de HTML
+    if (h.co2 > 0) {
+        const tag = document.createElement('span');
+        tag.className = 'co2-tag';
+        tag.title = 'Estimativa de CO₂ evitado cada vez que você faz esta ação';
+        tag.textContent = `~${formatCo2(h.co2)} CO₂`;
+        label.append(' ', tag);
+    }
 
     return [
         box, label,
@@ -115,8 +129,16 @@ function updateProgress() {
     progressText.textContent = `${done} de ${habits.length} ações feitas hoje`;
 }
 
+function updateSummary() {
+    streakEl.textContent = streak === 0
+        ? 'Finalize o dia para começar sua sequência'
+        : `${streak} ${streak === 1 ? 'dia seguido' : 'dias seguidos'}`;
+    co2El.textContent = co2Total > 0 ? `${formatCo2(co2Total)} de CO₂ evitados (estimativa)` : 'Nenhuma estimativa ainda';
+}
+
 async function toggle(habit, done) {
     habit.done = done;
+    co2Total += done ? habit.co2 : -habit.co2;
     render();
     try {
         await api('/habits/toggle', 'POST', { id: habit.id, done });

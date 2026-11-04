@@ -34,6 +34,7 @@
         <div class="card stat"><small>Ações no mês</small><strong id="st-total">–</strong></div>
         <div class="card stat"><small>Média por dia ativo</small><strong id="st-avg">–</strong></div>
         <div class="card stat"><small>Ação mais feita</small><strong id="st-top" class="small-text">–</strong><em id="st-top-count"></em></div>
+        <div class="card stat"><small>CO₂ evitado (estimativa)</small><strong id="st-co2">–</strong></div>
     </div>
 
     <div class="card">
@@ -49,6 +50,17 @@
     <p class="empty" id="empty" hidden>Nada por aqui ainda. Marque ações na tela "Hoje"!</p>
     <div id="days"></div>
 
+    <details class="card sources">
+        <summary>Como estimamos o CO₂ evitado</summary>
+        <p>São <strong>estimativas aproximadas</strong>, só para dar uma ideia de grandeza. Somamos apenas as ações que têm um valor com fonte; as demais (reciclagem, árvores, tomadas etc.) aparecem sem estimativa porque não encontramos um número confiável para o dia a dia.</p>
+        <ul>
+            <li><strong>Transporte sustentável: ~830 g por vez.</strong> Supõe ~5 km evitados de carro × 0,167 kg CO₂e/km (média de carros, fatores de conversão do governo do Reino Unido, edição 2023).
+                <a href="https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting" target="_blank" rel="noopener">UK DEFRA/DESNZ</a></li>
+            <li><strong>Dia sem carne: ~1,8 kg por vez.</strong> Diferença entre a dieta de quem come carne moderadamente (5,63 kg CO₂e/dia) e de vegetarianos (3,81 kg CO₂e/dia).
+                <a href="https://ideas.repec.org/a/spr/climat/v125y2014i2p179-192.html" target="_blank" rel="noopener">Scarborough et al., Climatic Change, 2014</a></li>
+        </ul>
+        <p>Os dois estudos usam dados do Reino Unido; no Brasil os valores reais podem ser diferentes (a distância percorrida, o tipo de carro e a dieta mudam bastante o resultado).</p>
+    </details>
 </main>
 
 <script src="js/api.js"></script>

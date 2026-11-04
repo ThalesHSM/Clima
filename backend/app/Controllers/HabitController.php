@@ -16,6 +16,8 @@ class HabitController extends Controller
         $this->json([
             'today' => $today,
             'closed' => Checkin::isClosed($userId, $today),
+            'streak' => Checkin::streak($userId, $today),
+            'co2Total' => Habit::co2Total($userId),
             'habits' => Habit::listWithToday($userId, $today),
         ]);
     }
