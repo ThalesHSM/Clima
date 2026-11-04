@@ -13,19 +13,19 @@ Terminal 1 – backend:
 
 ```
 cd backend
-php -S localhost:8000 -t public public/index.php
+php -S 127.0.0.1:8000 -t public public/index.php
 ```
 
 Terminal 2 – frontend:
 
 ```
 cd frontend
-php -S localhost:3000
+php -S 127.0.0.1:3000
 ```
 
-Abra http://localhost:3000. O banco (`backend/data/clima.sqlite`) é criado automaticamente.
+Abra http://127.0.0.1:3000. O banco (`backend/data/clima.sqlite`) é criado automaticamente.
 
-> Use sempre `localhost` e as portas acima, pois o CORS do backend e a `API_URL` do frontend (`frontend/js/api.js`) apontam para elas.
+> Use sempre `127.0.0.1` (não `localhost`: no Windows ele tenta IPv6/IPv4 e deixa cada requisição lenta) e as portas acima, pois o CORS do backend e a `API_URL` do frontend (`frontend/js/api.js`) apontam para elas.
 
 ## API
 

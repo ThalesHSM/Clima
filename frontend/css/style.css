@@ -92,7 +92,7 @@ input:focus { outline: 2px solid var(--green-500); border-color: transparent; }
 .msg[hidden] { display: none; }
 .btn.finish { width: 100%; margin-top: 18px; }
 .btn.finish.reopen { background: transparent; color: var(--green-700); border: 2px solid var(--green-700); }
-.hero [hidden] { display: none; }
+[hidden] { display: none !important; }
 .badge { font-size: .75rem; background: var(--green-100); color: var(--green-900); padding: 2px 8px; border-radius: 999px; font-weight: 600; }
 
 /* ---------- Página inicial ---------- */

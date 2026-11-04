@@ -1,5 +1,5 @@
 <?php
-// Ponto de entrada da API. Rodar com: php -S localhost:8000 -t public public/index.php
+// Ponto de entrada da API. Rodar com: php -S 127.0.0.1:8000 -t public public/index.php
 
 use App\Controllers\AuthController;
 use App\Controllers\HabitController;
@@ -15,9 +15,13 @@ spl_autoload_register(function (string $class) {
     }
 });
 
-// CORS: o frontend roda em outra porta (localhost:3000)
-$allowedOrigin = 'http://localhost:3000';
-header("Access-Control-Allow-Origin: $allowedOrigin");
+// CORS: o frontend roda em outra porta (3000)
+$allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+header('Access-Control-Max-Age: 600'); // navegador guarda o preflight por 10 min
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
