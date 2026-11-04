@@ -28,6 +28,9 @@ class HabitController extends Controller
         if ($title === '' || mb_strlen($title) > 120) {
             $this->error('Digite uma ação com até 120 caracteres.', 422);
         }
+        if (Habit::existsActive($userId, $title)) {
+            $this->error('Essa ação já está na sua lista.', 409);
+        }
 
         Habit::create($userId, $title);
         $this->json(['ok' => true], 201);

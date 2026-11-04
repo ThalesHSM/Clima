@@ -19,6 +19,13 @@ class Habit
         $st->execute([$userId, $title, date('Y-m-d H:i:s')]);
     }
 
+    public static function existsActive(int $userId, string $title): bool
+    {
+        $st = Database::get()->prepare('SELECT 1 FROM habits WHERE user_id = ? AND active = 1 AND title = ? COLLATE NOCASE');
+        $st->execute([$userId, $title]);
+        return (bool) $st->fetch();
+    }
+
     /** Ações ativas do usuário, indicando se foram feitas hoje. */
     public static function listWithToday(int $userId, string $today): array
     {
