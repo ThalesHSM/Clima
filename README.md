@@ -71,4 +71,4 @@ São valores aproximados, com dados do Reino Unido. As demais ações não têm 
 
 ## Notícias (Mongabay Brasil)
 
-A página inicial lista as matérias mais recentes do feed RSS do [Mongabay Brasil](https://brasil.mongabay.com/). O conteúdo deles é publicado sob licença CC BY-ND 4.0, então o uso é conservador: guardamos e mostramos só **título, data e link** para a matéria original, sempre com a fonte. Sem imagens, sem trechos e sem alterar ou traduzir os títulos. O backend guarda o resultado por 30 minutos em `backend/data/news-cache.json` (ignorado pelo git); se o site deles ficar fora do ar, usa a última versão guardada ou esconde a seção.
+A página inicial lista as matérias mais recentes do feed RSS do [Mongabay Brasil](https://brasil.mongabay.com/). O conteúdo deles é publicado sob licença CC BY-ND 4.0, então o uso é conservador: guardo e mostro só **título, data e link** para a matéria original, sempre com a fonte. Sem imagens, sem trechos e sem alterar ou traduzir os títulos. O backend guarda o resultado por 30 minutos em `backend/data/news-cache.json` (ignorado pelo git); se o site deles ficar fora do ar, usa a última versão guardada ou esconde a seção.
